@@ -13,6 +13,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.Button;
+import javafx.util.Callback;
 
 public class CartController {
 
@@ -35,6 +38,8 @@ public class CartController {
     @FXML
     private TableColumn<OrderItem, Number> priceColumn;
     @FXML
+    private TableColumn<OrderItem, Void> actionColumn;
+    @FXML
     private Label totalLabel;
     @FXML
     private Label messageLabel;
@@ -47,10 +52,53 @@ public class CartController {
                 cellData.getValue().getPrice().doubleValue()));
 
         if (currentCart != null) {
-            cartTable.setItems(FXCollections.observableArrayList(currentCart.getItems()));
-            totalLabel.setText("Total: " + currentCart.getTotalAmount() + " €");
+            refreshTable();
         } else {
-            totalLabel.setText("Total: 0 €");
+            totalLabel.setText("Total: 0 Dhs");
+        }
+
+        setupActionColumn();
+    }
+
+    private void setupActionColumn() {
+        Callback<TableColumn<OrderItem, Void>, TableCell<OrderItem, Void>> cellFactory = new Callback<TableColumn<OrderItem, Void>, TableCell<OrderItem, Void>>() {
+            @Override
+            public TableCell<OrderItem, Void> call(final TableColumn<OrderItem, Void> param) {
+                final TableCell<OrderItem, Void> cell = new TableCell<OrderItem, Void>() {
+                    private final Button btn = new Button("❌ Supprimer");
+
+                    {
+                        btn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-cursor: hand;");
+                        btn.setOnAction(event -> {
+                            OrderItem item = getTableView().getItems().get(getIndex());
+                            orderService.removeFromCart(currentCart, item);
+                            refreshTable();
+                        });
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+        actionColumn.setCellFactory(cellFactory);
+    }
+
+    private void refreshTable() {
+        if (currentCart != null) {
+            cartTable.setItems(FXCollections.observableArrayList(currentCart.getItems()));
+            totalLabel.setText("Total: " + currentCart.getTotalAmount() + " Dhs");
+        } else {
+            cartTable.getItems().clear();
+            totalLabel.setText("Total: 0 Dhs");
         }
     }
 
@@ -65,7 +113,7 @@ public class CartController {
             messageLabel.setText("Commande validée !");
             currentCart = null; // Reset cart
             cartTable.getItems().clear();
-            totalLabel.setText("Total: 0 €");
+            totalLabel.setText("Total: 0 Dhs");
         } catch (Exception e) {
             messageLabel.setText("Erreur : " + e.getMessage());
         }
@@ -73,6 +121,6 @@ public class CartController {
 
     @FXML
     private void goBack() throws IOException {
-        App.setRoot("main");
+        App.setRoot("artwork_list");
     }
 }

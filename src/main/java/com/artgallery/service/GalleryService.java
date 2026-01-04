@@ -36,4 +36,12 @@ public class GalleryService {
     public void addArtist(Artist artist) {
         artistDAO.save(artist);
     }
+
+    public Artwork updateArtwork(Artwork artwork) {
+        return artworkDAO.update(artwork);
+    }
+
+    public void deleteArtwork(Artwork artwork) {
+        artworkDAO.delete(artwork);
+    }
 }

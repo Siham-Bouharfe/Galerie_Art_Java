@@ -30,20 +30,23 @@ public abstract class GenericDAO<T> {
             session.persist(entity);
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
         }
     }
 
-    public void update(T entity) {
+    public T update(T entity) {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.merge(entity);
+            T mergedEntity = session.merge(entity);
             transaction.commit();
+            return mergedEntity;
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
         }
     }
 
@@ -51,11 +54,12 @@ public abstract class GenericDAO<T> {
         Transaction transaction = null;
         try (Session session = sessionFactory.openSession()) {
             transaction = session.beginTransaction();
-            session.remove(entity);
+            session.remove(session.contains(entity) ? entity : session.merge(entity));
             transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) transaction.rollback();
-            e.printStackTrace();
+            if (transaction != null)
+                transaction.rollback();
+            throw e;
         }
     }
 

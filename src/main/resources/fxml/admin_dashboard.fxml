@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
@@ -13,18 +15,23 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.artgallery.controller.AdminController">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.artgallery.controller.AdminController" styleClass="root">
+   <stylesheets>
+       <URL value="@../style.css" />
+   </stylesheets>
    <children>
-      <Label layoutX="14.0" layoutY="14.0" text="Tableau de Bord Administrateur">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <Button layoutX="716.0" layoutY="19.0" mnemonicParsing="false" onAction="#handleLogout" text="Déconnexion" AnchorPane.rightAnchor="14.0" />
-      <TabPane layoutX="14.0" layoutY="60.0" prefHeight="526.0" prefWidth="772.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="60.0">
+      <HBox spacing="10" alignment="CENTER_LEFT" layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" style="-fx-padding: 10 0 10 0;">
+         <children>
+            <Label text="Tableau de Bord Administrateur" styleClass="header-label" style="-fx-padding: 0;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Button mnemonicParsing="false" onAction="#handleLogout" text="🚪 Déconnexion" styleClass="btn-danger" />
+         </children>
+      </HBox>
+      <TabPane layoutX="14.0" layoutY="80.0" prefHeight="536.0" prefWidth="772.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
         <tabs>
           <Tab text="Gestion Commandes">
             <content>
@@ -58,14 +65,13 @@
                                     <TextArea fx:id="artistBioArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
                                     <HBox spacing="10.0">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#addArtist" text="Ajouter" />
-                                          <Button mnemonicParsing="false" onAction="#updateArtist" text="Modifier" />
+                                          <Button mnemonicParsing="false" onAction="#addArtist" text="Ajouter" styleClass="btn-success" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                          <Button mnemonicParsing="false" onAction="#updateArtist" text="Modifier" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
                                        </children>
                                     </HBox>
                                     <HBox spacing="10.0">
                                        <children>
-                                          <Button mnemonicParsing="false" onAction="#deleteArtist" text="Supprimer" />
-                                          <Button mnemonicParsing="false" onAction="#clearArtistForm" text="Vider" />
+                                          <Button mnemonicParsing="false" onAction="#deleteArtist" text="Supprimer" styleClass="btn-danger" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
                                        </children>
                                     </HBox>
                                  </children>
@@ -102,7 +108,12 @@
                                           <Label text="Description" />
                                           <TextArea fx:id="artworkDescArea" prefHeight="80.0" prefWidth="200.0" wrapText="true" />
                                           <Label text="URL Image" />
-                                          <TextField fx:id="artworkImageUrlField" />
+                                          <HBox spacing="5.0">
+                                             <children>
+                                                <TextField fx:id="artworkImageUrlField" HBox.hgrow="ALWAYS" />
+                                                <Button mnemonicParsing="false" onAction="#browseImage" text="Parcourir..." styleClass="btn-info" style="-fx-background-color: #3498db;" />
+                                             </children>
+                                          </HBox>
                                           <Label text="Artiste" />
                                           <ComboBox fx:id="artworkArtistCombo" prefWidth="150.0" />
                                           <Label text="Catégorie" />
@@ -110,28 +121,54 @@
                                           <CheckBox fx:id="artworkAvailableCheck" mnemonicParsing="false" selected="true" text="Disponible" />
                                           <HBox spacing="10.0">
                                              <children>
-                                                <Button mnemonicParsing="false" onAction="#addArtwork" text="Ajouter" />
-                                                <Button mnemonicParsing="false" onAction="#updateArtwork" text="Modifier" />
+                                                <Button mnemonicParsing="false" onAction="#addArtwork" text="Ajouter" styleClass="btn-success" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                                <Button mnemonicParsing="false" onAction="#updateArtwork" text="Modifier" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
                                              </children>
                                           </HBox>
                                           <HBox spacing="10.0">
                                              <children>
-                                                <Button mnemonicParsing="false" onAction="#deleteArtwork" text="Supprimer" />
-                                                <Button mnemonicParsing="false" onAction="#clearArtworkForm" text="Vider" />
+                                                <Button mnemonicParsing="false" onAction="#deleteArtwork" text="Supprimer" styleClass="btn-danger" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                                
                                              </children>
                                           </HBox>
                                        </children>
                                     </VBox>
                                  </content>
                               </ScrollPane>
-                              <TableView fx:id="artworkTable" prefHeight="469.0" prefWidth="480.0" HBox.hgrow="ALWAYS">
+                              <ListView fx:id="artworkListView" prefHeight="469.0" prefWidth="480.0" HBox.hgrow="ALWAYS" style="-fx-background-color: white;"/>
+                           </children>
+                        </HBox>
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Gestion Catégories">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <HBox layoutX="14.0" layoutY="14.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                           <children>
+                              <VBox prefHeight="469.0" prefWidth="250.0" spacing="10.0">
+                                 <children>
+                                    <Label text="Nom de la catégorie" />
+                                    <TextField fx:id="categoryNameField" />
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#addCategory" text="Ajouter" styleClass="btn-success" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                          <Button mnemonicParsing="false" onAction="#updateCategory" text="Modifier" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                       </children>
+                                    </HBox>
+                                    <HBox spacing="10.0">
+                                       <children>
+                                          <Button mnemonicParsing="false" onAction="#deleteCategory" text="Supprimer" styleClass="btn-danger" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </VBox>
+                              <TableView fx:id="categoryTable" prefHeight="469.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
                                 <columns>
-                                  <TableColumn fx:id="artworkIdColumn" prefWidth="40.0" text="ID" />
-                                  <TableColumn fx:id="artworkTitleColumn" prefWidth="100.0" text="Titre" />
-                                    <TableColumn fx:id="artworkPriceColumn" prefWidth="75.0" text="Prix" />
-                                    <TableColumn fx:id="artworkQuantityColumn" prefWidth="50.0" text="Qte" />
-                                    <TableColumn fx:id="artworkArtistColumn" prefWidth="100.0" text="Artiste" />
-                                    <TableColumn fx:id="artworkCategoryColumn" prefWidth="100.0" text="Catégorie" />
+                                  <TableColumn fx:id="categoryIdColumn" prefWidth="75.0" text="ID" />
+                                  <TableColumn fx:id="categoryNameColumn" prefWidth="400.0" text="Nom" />
                                 </columns>
                               </TableView>
                            </children>

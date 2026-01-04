@@ -5,9 +5,11 @@ com\artgallery\dao\GenericDAO.class
 com\artgallery\dao\OrderDAO.class
 com\artgallery\model\User.class
 com\artgallery\controller\AdminController.class
+com\artgallery\controller\CartController$1$1.class
+com\artgallery\controller\AdminController$1.class
 com\artgallery\model\OrderItem.class
 com\artgallery\model\Artwork.class
-com\artgallery\FixSchema.class
+com\artgallery\controller\CartController$1.class
 com\artgallery\controller\CartController.class
 com\artgallery\App.class
 com\artgallery\dao\ArtistDAO.class
@@ -21,5 +23,4 @@ com\artgallery\Launcher.class
 com\artgallery\service\GalleryService.class
 com\artgallery\controller\ArtworkController.class
 com\artgallery\controller\LoginController.class
-com\artgallery\CheckOrders.class
 com\artgallery\model\Artist.class

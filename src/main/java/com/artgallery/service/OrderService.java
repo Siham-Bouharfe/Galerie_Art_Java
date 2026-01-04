@@ -50,6 +50,11 @@ public class OrderService {
         recalculateTotal(cart);
     }
 
+    public void removeFromCart(Order cart, OrderItem item) {
+        cart.getItems().remove(item);
+        recalculateTotal(cart);
+    }
+
     private void recalculateTotal(Order cart) {
         BigDecimal total = BigDecimal.ZERO;
         for (OrderItem item : cart.getItems()) {
