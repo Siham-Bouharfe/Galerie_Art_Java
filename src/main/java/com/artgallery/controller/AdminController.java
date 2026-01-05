@@ -1,5 +1,7 @@
 package com.artgallery.controller;
 
+import com.artgallery.util.ImageUtils;
+
 import com.artgallery.App;
 import com.artgallery.dao.ArtistDAO;
 import com.artgallery.dao.ArtworkDAO;
@@ -12,20 +14,17 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.layout.Priority;
 import javafx.geometry.Pos;
-import java.io.InputStream;
 
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 import com.artgallery.model.Order;
-// import com.artgallery.model.OrderItem;
 import com.artgallery.dao.OrderDAO;
 import java.io.File;
 import java.nio.file.Files;
@@ -158,21 +157,7 @@ public class AdminController {
                     imageView.setPreserveRatio(true);
                     imageView.setStyle("-fx-border-color: #ddd; -fx-border-width: 1px;");
 
-                    try {
-                        String imagePath = artwork.getImageUrl();
-                        if (imagePath != null && !imagePath.isEmpty()) {
-                            InputStream imageStream = getClass().getResourceAsStream("/" + imagePath);
-                            if (imageStream != null) {
-                                imageView.setImage(new Image(imageStream));
-                            } else {
-                                imageView.setImage(new Image(getClass().getResourceAsStream("/images/default.png")));
-                            }
-                        } else {
-                            imageView.setImage(new Image(getClass().getResourceAsStream("/images/default.png")));
-                        }
-                    } catch (Exception e) {
-                        imageView.setImage(new Image(getClass().getResourceAsStream("/images/default.png")));
-                    }
+                    imageView.setImage(ImageUtils.loadImage(artwork.getImageUrl()));
 
                     // Info panel
                     VBox infoBox = new VBox(5);
@@ -182,7 +167,7 @@ public class AdminController {
                     Label titleLabel = new Label(artwork.getTitle());
                     titleLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: #333;");
 
-                    Label priceLabel = new Label("Prix: " + artwork.getPrice() + " €");
+                    Label priceLabel = new Label("Prix: " + artwork.getPrice() + " Dhs");
                     priceLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #4caf50; -fx-font-weight: bold;");
 
                     Label artistLabel = new Label("Artiste: " + artwork.getArtist().getName());

@@ -9,6 +9,7 @@ com\artgallery\controller\CartController$1$1.class
 com\artgallery\controller\AdminController$1.class
 com\artgallery\model\OrderItem.class
 com\artgallery\model\Artwork.class
+com\artgallery\util\ImageUtils.class
 com\artgallery\controller\CartController$1.class
 com\artgallery\controller\CartController.class
 com\artgallery\App.class

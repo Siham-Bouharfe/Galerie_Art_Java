@@ -1,7 +1,8 @@
 package com.artgallery.controller;
 
+import com.artgallery.util.ImageUtils;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.math.BigDecimal;
 import com.artgallery.App;
 import com.artgallery.service.GalleryService;
@@ -14,7 +15,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
@@ -100,21 +100,7 @@ public class ArtworkController {
         imageView.setPreserveRatio(true);
         imageContainer.getChildren().add(imageView);
 
-        try {
-            String imagePath = artwork.getImageUrl();
-            if (imagePath != null && !imagePath.isEmpty()) {
-                InputStream imageStream = getClass().getResourceAsStream("/" + imagePath);
-                if (imageStream != null) {
-                    imageView.setImage(new Image(imageStream));
-                } else {
-                    imageView.setImage(new Image(getClass().getResourceAsStream("/images/default.png")));
-                }
-            } else {
-                imageView.setImage(new Image(getClass().getResourceAsStream("/images/default.png")));
-            }
-        } catch (Exception e) {
-            imageView.setImage(new Image(getClass().getResourceAsStream("/images/default.png")));
-        }
+        imageView.setImage(ImageUtils.loadImage(artwork.getImageUrl()));
 
         // Titre
         Label titleLabel = new Label(artwork.getTitle());

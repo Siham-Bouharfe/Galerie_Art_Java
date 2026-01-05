@@ -31,7 +31,7 @@
             <!-- Barre d'outils Admin -->
             <HBox fx:id="adminToolbar" spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10px; -fx-background-color: #ebf5fb; -fx-border-color: #3498db; -fx-border-width: 0 0 0 5; -fx-border-radius: 0;">
                 <Label text="Administration :" style="-fx-font-weight: bold; -fx-text-fill: #2980b9;"/>
-                <Button text="➕ Ajouter une œuvre" onAction="#handleAddNewArtwork" styleClass="btn-success"/>
+                <Button text="Ajouter une œuvre" onAction="#handleAddNewArtwork" styleClass="btn-success"/>
             </HBox>
         </VBox>
     </top>

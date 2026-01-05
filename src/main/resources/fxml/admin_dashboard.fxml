@@ -43,7 +43,7 @@
                             <TableColumn fx:id="orderDateColumn" prefWidth="120.0" text="Date" />
                             <TableColumn fx:id="orderUserColumn" prefWidth="100.0" text="Utilisateur" />
                             <TableColumn fx:id="orderArtworksColumn" prefWidth="200.0" text="Oeuvres" />
-                            <TableColumn fx:id="orderTotalColumn" prefWidth="80.0" text="Total (€)" />
+                            <TableColumn fx:id="orderTotalColumn" prefWidth="80.0" text="Total (Dhs)" />
                             <TableColumn fx:id="orderStatusColumn" prefWidth="80.0" text="Statut" />
                           </columns>
                         </TableView>
