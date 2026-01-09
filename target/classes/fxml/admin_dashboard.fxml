@@ -1,34 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.net.URL?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Tab?>
-<?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
+<?import java.net.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.artgallery.controller.AdminController" styleClass="root">
+<AnchorPane prefHeight="600.0" prefWidth="900.0" styleClass="root" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.artgallery.controller.AdminController">
    <stylesheets>
        <URL value="@../style.css" />
    </stylesheets>
    <children>
-      <HBox spacing="10" alignment="CENTER_LEFT" layoutX="14.0" layoutY="14.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" style="-fx-padding: 10 0 10 0;">
+      <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="14.0" spacing="10" style="-fx-padding: 10 0 10 0;" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
          <children>
-            <Label text="Tableau de Bord Administrateur" styleClass="header-label" style="-fx-padding: 0;"/>
+            <Label style="-fx-padding: 0;" styleClass="header-label" text="Tableau de Bord Administrateur" />
             <Region HBox.hgrow="ALWAYS" />
-            <Button mnemonicParsing="false" onAction="#handleLogout" text="🚪 Déconnexion" styleClass="btn-danger" />
+            <Button mnemonicParsing="false" onAction="#handleLogout" styleClass="btn-danger" text="🚪 Déconnexion" />
          </children>
       </HBox>
       <TabPane layoutX="14.0" layoutY="80.0" prefHeight="536.0" prefWidth="772.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="80.0">
@@ -37,14 +22,14 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <TableView fx:id="orderTable" layoutX="14.0" layoutY="14.0" prefHeight="469.0" prefWidth="744.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                        <TableView fx:id="orderTable" layoutX="-0.6666666666666666" layoutY="12.0" prefHeight="405.0" prefWidth="758.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="12.0">
                           <columns>
-                            <TableColumn fx:id="orderIdColumn" prefWidth="50.0" text="ID" />
-                            <TableColumn fx:id="orderDateColumn" prefWidth="120.0" text="Date" />
-                            <TableColumn fx:id="orderUserColumn" prefWidth="100.0" text="Utilisateur" />
-                            <TableColumn fx:id="orderArtworksColumn" prefWidth="200.0" text="Oeuvres" />
-                            <TableColumn fx:id="orderTotalColumn" prefWidth="80.0" text="Total (Dhs)" />
-                            <TableColumn fx:id="orderStatusColumn" prefWidth="80.0" text="Statut" />
+                            <TableColumn fx:id="orderIdColumn" prefWidth="52.0" text="ID" />
+                            <TableColumn fx:id="orderDateColumn" prefWidth="162.0" text="Date" />
+                            <TableColumn fx:id="orderUserColumn" prefWidth="111.0" text="Utilisateur" />
+                            <TableColumn fx:id="orderArtworksColumn" prefWidth="227.0" text="Oeuvres" />
+                            <TableColumn fx:id="orderTotalColumn" prefWidth="106.0" text="Total (Dhs)" />
+                            <TableColumn fx:id="orderStatusColumn" maxWidth="1.7976931348623157E308" prefWidth="90.0" text="Statut" />
                           </columns>
                         </TableView>
                      </children>
@@ -53,49 +38,61 @@
           </Tab>
           <Tab text="Gestion Artistes">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <HBox layoutX="14.0" layoutY="14.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-                           <children>
-                              <VBox prefHeight="469.0" prefWidth="250.0" spacing="10.0">
-                                 <children>
-                                    <Label text="Nom de l'artiste" />
-                                    <TextField fx:id="artistNameField" />
-                                    <Label text="Biographie" />
-                                    <TextArea fx:id="artistBioArea" prefHeight="200.0" prefWidth="200.0" wrapText="true" />
-                                    <HBox spacing="10.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#addArtist" text="Ajouter" styleClass="btn-success" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                          <Button mnemonicParsing="false" onAction="#updateArtist" text="Modifier" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                       </children>
-                                    </HBox>
-                                    <HBox spacing="10.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#deleteArtist" text="Supprimer" styleClass="btn-danger" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <TableView fx:id="artistTable" prefHeight="469.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
+               <StackPane>
+                  <children>
+                      <!-- LIST VIEW -->
+                      <VBox fx:id="artistListContainer" spacing="10.0" style="-fx-padding: 10;">
+                          <children>
+                              <Button mnemonicParsing="false" onAction="#showArtistAddForm" styleClass="btn-success" text="+ Nouvel Artiste" />
+                              <TableView fx:id="artistTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="artistIdColumn" prefWidth="50.0" text="ID" />
                                   <TableColumn fx:id="artistNameColumn" prefWidth="150.0" text="Nom" />
                                     <TableColumn fx:id="artistBioColumn" prefWidth="250.0" text="Biographie" />
                                 </columns>
                               </TableView>
-                           </children>
-                        </HBox>
-                     </children>
-                  </AnchorPane>
+                          </children>
+                      </VBox>
+                      
+                      <!-- FORM VIEW -->
+                      <VBox fx:id="artistFormContainer" spacing="10.0" style="-fx-padding: 20; -fx-background-color: white;" visible="false">
+                         <children>
+                            <Button mnemonicParsing="false" onAction="#showArtistList" styleClass="btn-secondary" text="← Retour à la liste" />
+                            <Label styleClass="subheader-label" text="Détails de l'artiste" />
+                            <Label text="Nom de l'artiste" />
+                            <TextField fx:id="artistNameField" />
+                            <Label text="Biographie" />
+                            <TextArea fx:id="artistBioArea" prefHeight="200.0" wrapText="true" VBox.vgrow="ALWAYS" />
+                            <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                               <children>
+                                  <Button fx:id="btnAddArtist" mnemonicParsing="false" onAction="#addArtist" styleClass="btn-success" text="Ajouter" />
+                                  <Button fx:id="btnUpdateArtist" mnemonicParsing="false" onAction="#updateArtist" styleClass="btn-primary" text="Modifier" />
+                                  <Button fx:id="btnDeleteArtist" mnemonicParsing="false" onAction="#deleteArtist" styleClass="btn-danger" text="Supprimer" />
+                               </children>
+                            </HBox>
+                         </children>
+                      </VBox>
+                  </children>
+               </StackPane>
             </content>
           </Tab>
           <Tab text="Gestion Oeuvres">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <HBox layoutX="14.0" layoutY="14.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-                           <children>
-                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="469.0" prefWidth="300.0" style="-fx-background-color:transparent;">
+               <StackPane>
+                  <children>
+                      <!-- LIST VIEW -->
+                      <VBox fx:id="artworkListContainer" spacing="10.0" style="-fx-padding: 10;">
+                          <children>
+                              <Button mnemonicParsing="false" onAction="#showArtworkAddForm" styleClass="btn-success" text="+ Nouvelle Oeuvre" />
+                              <ListView fx:id="artworkListView" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" />
+                          </children>
+                      </VBox>
+                      
+                      <!-- FORM VIEW -->
+                      <VBox fx:id="artworkFormContainer" spacing="10.0" style="-fx-padding: 20; -fx-background-color: white;" visible="false">
+                         <children>
+                            <Button mnemonicParsing="false" onAction="#showArtworkList" styleClass="btn-secondary" text="← Retour à la liste" />
+                             <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color:transparent;" VBox.vgrow="ALWAYS">
                                  <content>
                                     <VBox spacing="10.0">
                                        <children>
@@ -106,75 +103,72 @@
                                           <Label text="Quantité" />
                                           <TextField fx:id="artworkQuantityField" />
                                           <Label text="Description" />
-                                          <TextArea fx:id="artworkDescArea" prefHeight="80.0" prefWidth="200.0" wrapText="true" />
+                                          <TextArea fx:id="artworkDescArea" prefHeight="80.0" wrapText="true" />
                                           <Label text="URL Image" />
                                           <HBox spacing="5.0">
                                              <children>
                                                 <TextField fx:id="artworkImageUrlField" HBox.hgrow="ALWAYS" />
-                                                <Button mnemonicParsing="false" onAction="#browseImage" text="Parcourir..." styleClass="btn-info" style="-fx-background-color: #3498db;" />
+                                                <Button mnemonicParsing="false" onAction="#browseImage" style="-fx-background-color: #3498db;" styleClass="btn-info" text="Parcourir..." />
                                              </children>
                                           </HBox>
                                           <Label text="Artiste" />
-                                          <ComboBox fx:id="artworkArtistCombo" prefWidth="150.0" />
+                                          <ComboBox fx:id="artworkArtistCombo" prefWidth="250.0" />
                                           <Label text="Catégorie" />
-                                          <ComboBox fx:id="artworkCategoryCombo" prefWidth="150.0" />
+                                          <ComboBox fx:id="artworkCategoryCombo" prefWidth="250.0" />
                                           <CheckBox fx:id="artworkAvailableCheck" mnemonicParsing="false" selected="true" text="Disponible" />
-                                          <HBox spacing="10.0">
-                                             <children>
-                                                <Button mnemonicParsing="false" onAction="#addArtwork" text="Ajouter" styleClass="btn-success" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                                <Button mnemonicParsing="false" onAction="#updateArtwork" text="Modifier" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                             </children>
-                                          </HBox>
-                                          <HBox spacing="10.0">
-                                             <children>
-                                                <Button mnemonicParsing="false" onAction="#deleteArtwork" text="Supprimer" styleClass="btn-danger" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                                
-                                             </children>
-                                          </HBox>
                                        </children>
                                     </VBox>
                                  </content>
-                              </ScrollPane>
-                              <ListView fx:id="artworkListView" prefHeight="469.0" prefWidth="480.0" HBox.hgrow="ALWAYS" style="-fx-background-color: white;"/>
-                           </children>
-                        </HBox>
-                     </children>
-                  </AnchorPane>
+                             </ScrollPane>
+                            <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                               <children>
+                                  <Button fx:id="btnAddArtwork" mnemonicParsing="false" onAction="#addArtwork" styleClass="btn-success" text="Ajouter" />
+                                  <Button fx:id="btnUpdateArtwork" mnemonicParsing="false" onAction="#updateArtwork" styleClass="btn-primary" text="Modifier" />
+                                  <Button fx:id="btnDeleteArtwork" mnemonicParsing="false" onAction="#deleteArtwork" styleClass="btn-danger" text="Supprimer" />
+                               </children>
+                            </HBox>
+                         </children>
+                      </VBox>
+                  </children>
+               </StackPane>
             </content>
           </Tab>
           <Tab text="Gestion Catégories">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                     <children>
-                        <HBox layoutX="14.0" layoutY="14.0" spacing="20.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-                           <children>
-                              <VBox prefHeight="469.0" prefWidth="250.0" spacing="10.0">
-                                 <children>
-                                    <Label text="Nom de la catégorie" />
-                                    <TextField fx:id="categoryNameField" />
-                                    <HBox spacing="10.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#addCategory" text="Ajouter" styleClass="btn-success" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                          <Button mnemonicParsing="false" onAction="#updateCategory" text="Modifier" styleClass="btn-primary" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                       </children>
-                                    </HBox>
-                                    <HBox spacing="10.0">
-                                       <children>
-                                          <Button mnemonicParsing="false" onAction="#deleteCategory" text="Supprimer" styleClass="btn-danger" HBox.hgrow="ALWAYS" maxWidth="Infinity" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </VBox>
-                              <TableView fx:id="categoryTable" prefHeight="469.0" prefWidth="500.0" HBox.hgrow="ALWAYS">
+               <StackPane>
+                  <children>
+                      <!-- LIST VIEW -->
+                      <VBox fx:id="categoryListContainer" spacing="10.0" style="-fx-padding: 10;">
+                          <children>
+                              <Button mnemonicParsing="false" onAction="#showCategoryAddForm" styleClass="btn-success" text="+ Nouvelle Catégorie" />
+                              <TableView fx:id="categoryTable" VBox.vgrow="ALWAYS">
                                 <columns>
                                   <TableColumn fx:id="categoryIdColumn" prefWidth="75.0" text="ID" />
                                   <TableColumn fx:id="categoryNameColumn" prefWidth="400.0" text="Nom" />
                                 </columns>
                               </TableView>
-                           </children>
-                        </HBox>
-                     </children>
-                  </AnchorPane>
+                          </children>
+                      </VBox>
+                      
+                      <!-- FORM VIEW -->
+                      <VBox fx:id="categoryFormContainer" spacing="10.0" style="-fx-padding: 20; -fx-background-color: white;" visible="false">
+                         <children>
+                            <Button mnemonicParsing="false" onAction="#showCategoryList" styleClass="btn-secondary" text="← Retour à la liste" />
+                            <Label styleClass="subheader-label" text="Détails de la catégorie" />
+                            <Label text="Nom de la catégorie" />
+                            <TextField fx:id="categoryNameField" />
+                            <Region VBox.vgrow="ALWAYS" />
+                            <HBox spacing="10.0" alignment="CENTER_RIGHT">
+                               <children>
+                                  <Button fx:id="btnAddCategory" mnemonicParsing="false" onAction="#addCategory" styleClass="btn-success" text="Ajouter" />
+                                  <Button fx:id="btnUpdateCategory" mnemonicParsing="false" onAction="#updateCategory" styleClass="btn-primary" text="Modifier" />
+                                  <Button fx:id="btnDeleteCategory" mnemonicParsing="false" onAction="#deleteCategory" styleClass="btn-danger" text="Supprimer" />
+                               </children>
+                            </HBox>
+                         </children>
+                      </VBox>
+                  </children>
+               </StackPane>
             </content>
           </Tab>
         </tabs>

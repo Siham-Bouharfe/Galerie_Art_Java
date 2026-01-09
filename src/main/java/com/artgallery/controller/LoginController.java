@@ -37,7 +37,7 @@ public class LoginController {
             if ("ADMIN".equalsIgnoreCase(user.getRole())) {
                 App.setRoot("admin_dashboard");
             } else {
-                System.out.println("🔄 Redirection directe vers la galerie...");
+                System.out.println(" Redirection directe vers la galerie...");
                 App.setRoot("artwork_list");
             }
         } else {

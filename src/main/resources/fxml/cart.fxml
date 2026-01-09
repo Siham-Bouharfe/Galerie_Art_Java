@@ -26,7 +26,8 @@
             <TableView fx:id="cartTable" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="artworkColumn" text="Oeuvre" prefWidth="350"/>
-                    <TableColumn fx:id="priceColumn" text="Prix (Dhs)" prefWidth="120"/>
+                    <TableColumn fx:id="quantityColumn" text="Qté" prefWidth="70" style="-fx-alignment: CENTER;"/>
+                    <TableColumn fx:id="priceColumn" text="Total (Dhs)" prefWidth="150"/>
                     <TableColumn fx:id="actionColumn" text="Action" prefWidth="150"/>
                 </columns>
             </TableView>

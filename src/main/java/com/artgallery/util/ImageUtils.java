@@ -15,13 +15,11 @@ public class ImageUtils {
         }
 
         try {
-            // 1. Essayer de charger depuis le classpath (ressources packagées)
             InputStream is = ImageUtils.class.getResourceAsStream("/" + imagePath);
             if (is != null) {
                 return new Image(is);
             }
 
-            // 2. Essayer de charger depuis le système de fichiers (nouveaux uploads)
             File file = new File(IMAGES_DIR + imagePath);
             if (file.exists()) {
                 return new Image(file.toURI().toString());

@@ -1,12 +1,19 @@
 package com.artgallery.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.artgallery.App;
 import com.artgallery.service.OrderService;
 import com.artgallery.model.Order;
 import com.artgallery.model.Artwork;
 import com.artgallery.model.OrderItem;
 
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -19,8 +26,6 @@ import javafx.util.Callback;
 
 public class CartController {
 
-    // STATIC CART for simplicity in this demo without dependency injection
-    // framework
     private static Order currentCart;
     private static OrderService orderService = new OrderService();
 
@@ -31,14 +36,53 @@ public class CartController {
         orderService.addToCart(currentCart, artwork);
     }
 
+    // Inner class for aggregation
+    public static class CartEntry {
+        private final Artwork artwork;
+        private final int quantity;
+        private final BigDecimal totalPrice;
+        private final List<OrderItem> items;
+
+        public CartEntry(Artwork artwork, List<OrderItem> items) {
+            this.artwork = artwork;
+            this.items = items;
+            this.quantity = items.size();
+
+            // Sum prices of all items
+            BigDecimal sum = BigDecimal.ZERO;
+            for (OrderItem item : items) {
+                sum = sum.add(item.getPrice());
+            }
+            this.totalPrice = sum;
+        }
+
+        public Artwork getArtwork() {
+            return artwork;
+        }
+
+        public int getQuantity() {
+            return quantity;
+        }
+
+        public BigDecimal getTotalPrice() {
+            return totalPrice;
+        }
+
+        public List<OrderItem> getItems() {
+            return items;
+        }
+    }
+
     @FXML
-    private TableView<OrderItem> cartTable;
+    private TableView<CartEntry> cartTable;
     @FXML
-    private TableColumn<OrderItem, String> artworkColumn;
+    private TableColumn<CartEntry, String> artworkColumn;
     @FXML
-    private TableColumn<OrderItem, Number> priceColumn;
+    private TableColumn<CartEntry, Integer> quantityColumn;
     @FXML
-    private TableColumn<OrderItem, Void> actionColumn;
+    private TableColumn<CartEntry, Number> priceColumn;
+    @FXML
+    private TableColumn<CartEntry, Void> actionColumn;
     @FXML
     private Label totalLabel;
     @FXML
@@ -48,8 +92,12 @@ public class CartController {
     public void initialize() {
         artworkColumn
                 .setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getArtwork().getTitle()));
+
+        quantityColumn.setCellValueFactory(
+                cellData -> new SimpleIntegerProperty(cellData.getValue().getQuantity()).asObject());
+
         priceColumn.setCellValueFactory(cellData -> new javafx.beans.property.SimpleDoubleProperty(
-                cellData.getValue().getPrice().doubleValue()));
+                cellData.getValue().getTotalPrice().doubleValue()));
 
         if (currentCart != null) {
             refreshTable();
@@ -61,18 +109,21 @@ public class CartController {
     }
 
     private void setupActionColumn() {
-        Callback<TableColumn<OrderItem, Void>, TableCell<OrderItem, Void>> cellFactory = new Callback<TableColumn<OrderItem, Void>, TableCell<OrderItem, Void>>() {
+        Callback<TableColumn<CartEntry, Void>, TableCell<CartEntry, Void>> cellFactory = new Callback<>() {
             @Override
-            public TableCell<OrderItem, Void> call(final TableColumn<OrderItem, Void> param) {
-                final TableCell<OrderItem, Void> cell = new TableCell<OrderItem, Void>() {
-                    private final Button btn = new Button("❌ Supprimer");
+            public TableCell<CartEntry, Void> call(final TableColumn<CartEntry, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button();
 
                     {
-                        btn.setStyle("-fx-background-color: #f44336; -fx-text-fill: white; -fx-cursor: hand;");
+                        btn.setMinWidth(100);
                         btn.setOnAction(event -> {
-                            OrderItem item = getTableView().getItems().get(getIndex());
-                            orderService.removeFromCart(currentCart, item);
-                            refreshTable();
+                            CartEntry entry = getTableView().getItems().get(getIndex());
+                            if (entry != null && !entry.getItems().isEmpty()) {
+                                // Remove only the first item in the list (decrement quantity by 1)
+                                orderService.removeFromCart(currentCart, entry.getItems().get(0));
+                                refreshTable();
+                            }
                         });
                     }
 
@@ -82,11 +133,23 @@ public class CartController {
                         if (empty) {
                             setGraphic(null);
                         } else {
+                            CartEntry entry = getTableView().getItems().get(getIndex());
+                            // Dynamic text and style
+                            if (entry != null) {
+                                if (entry.getQuantity() > 1) {
+                                    btn.setText(" Réduire");
+                                    btn.setStyle(
+                                            "-fx-background-color: #f39c12; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+                                } else {
+                                    btn.setText(" Supprimer");
+                                    btn.setStyle(
+                                            "-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+                                }
+                            }
                             setGraphic(btn);
                         }
                     }
                 };
-                return cell;
             }
         };
         actionColumn.setCellFactory(cellFactory);
@@ -94,7 +157,20 @@ public class CartController {
 
     private void refreshTable() {
         if (currentCart != null) {
-            cartTable.setItems(FXCollections.observableArrayList(currentCart.getItems()));
+            List<OrderItem> allItems = currentCart.getItems();
+
+            // Group by Artwork ID
+            Map<Long, List<OrderItem>> groupedItems = allItems.stream()
+                    .collect(Collectors.groupingBy(item -> item.getArtwork().getId()));
+
+            List<CartEntry> entries = new ArrayList<>();
+            for (List<OrderItem> group : groupedItems.values()) {
+                if (!group.isEmpty()) {
+                    entries.add(new CartEntry(group.get(0).getArtwork(), group));
+                }
+            }
+
+            cartTable.setItems(FXCollections.observableArrayList(entries));
             totalLabel.setText("Total: " + currentCart.getTotalAmount() + " Dhs");
         } else {
             cartTable.getItems().clear();

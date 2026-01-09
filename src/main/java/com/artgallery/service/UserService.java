@@ -7,12 +7,11 @@ public class UserService {
     private UserDAO userDAO = new UserDAO();
 
     public User register(String username, String password, String email) {
-        // Dans une vraie application, il faut hasher le mot de passe ici
         User user = new User();
         user.setUsername(username);
-        user.setPassword(password); // Plain text pour cet exemple simple
+        user.setPassword(password);
         user.setEmail(email);
-        user.setRole("CUSTOMER"); // Role par défaut
+        user.setRole("CUSTOMER"); // par defaut
         
         userDAO.save(user);
         return user;

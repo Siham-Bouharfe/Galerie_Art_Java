@@ -41,9 +41,7 @@ public class RegisterController {
             messageLabel.setText("Inscription réussie ! Redirection...");
             messageLabel.setStyle("-fx-text-fill: green;");
 
-            // Délai simulé ou juste un bouton pkus tard. Ici on redirige direct après un
-            // court instant ou clic.
-            // Pour simplifier l'UX ici, on demande de cliquer sur Login ou on redirige.
+
         } catch (Exception e) {
             messageLabel.setText("Erreur lors de l'inscription: " + e.getMessage());
             messageLabel.setStyle("-fx-text-fill: red;");

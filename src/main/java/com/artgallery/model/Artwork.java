@@ -26,7 +26,7 @@ public class Artwork {
     private BigDecimal price;
 
     @Column(nullable = false)
-    private String imageUrl; // Chemin ou URL de l'image
+    private String imageUrl;
 
     @ManyToOne
     @JoinColumn(name = "artist_id", nullable = false)

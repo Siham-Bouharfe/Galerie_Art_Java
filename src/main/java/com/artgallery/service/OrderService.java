@@ -12,10 +12,8 @@ import java.util.ArrayList;
 
 public class OrderService {
     private OrderDAO orderDAO = new OrderDAO();
+    private OrderItemService orderItemService = new OrderItemService();
 
-    // Simple in-memory cart for the session, or we could persist it.
-    // For this simple app, we'll create an Order object that acts as a cart until
-    // saved.
 
     public Order createCart(User user) {
         Order cart = new Order();
@@ -32,7 +30,6 @@ public class OrderService {
             throw new IllegalStateException("Oeuvre non disponible");
         }
 
-        // Count how many of this artwork are already in the cart
         long countInCart = cart.getItems().stream()
                 .filter(item -> item.getArtwork().getId().equals(artwork.getId()))
                 .count();
@@ -41,11 +38,7 @@ public class OrderService {
             throw new IllegalStateException("Quantité insuffisante pour cette oeuvre");
         }
 
-        OrderItem item = new OrderItem();
-        item.setOrder(cart);
-        item.setArtwork(artwork);
-        item.setPrice(artwork.getPrice());
-
+        OrderItem item = orderItemService.createOrderItem(cart, artwork);
         cart.getItems().add(item);
         recalculateTotal(cart);
     }
@@ -68,7 +61,7 @@ public class OrderService {
             throw new IllegalStateException("Panier vide");
         }
 
-        // Verify stock again before checkout
+        //on verifie le stock avant de commander
         for (OrderItem item : cart.getItems()) {
             if (item.getArtwork().getQuantity() <= 0) {
                 throw new IllegalStateException(
@@ -79,7 +72,6 @@ public class OrderService {
         cart.setOrderDate(LocalDateTime.now());
         cart.setStatus("COMPLETED");
 
-        // Decrement stock
         com.artgallery.dao.ArtworkDAO artworkDAO = new com.artgallery.dao.ArtworkDAO();
         for (OrderItem item : cart.getItems()) {
             Artwork artwork = item.getArtwork();
@@ -93,7 +85,16 @@ public class OrderService {
         orderDAO.save(cart);
     }
 
+    public List<Order> getAllOrders() {
+        return orderDAO.findAll();
+    }
+
     public List<Order> getUserOrders(User user) {
         return orderDAO.findByUser(user);
+    }
+
+    public void updateOrderStatus(Order order, String status) {
+        order.setStatus(status);
+        orderDAO.update(order);
     }
 }

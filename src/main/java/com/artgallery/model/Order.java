@@ -32,7 +32,6 @@ public class Order {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<OrderItem> items = new ArrayList<>();
 
-    // Status: PENDING, COMPLETED, CANCELLED
     @Column(nullable = false)
     private String status;
 }

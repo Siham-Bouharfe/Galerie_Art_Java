@@ -5,7 +5,9 @@ import com.artgallery.util.ImageUtils;
 import java.io.IOException;
 import java.math.BigDecimal;
 import com.artgallery.App;
-import com.artgallery.service.GalleryService;
+import com.artgallery.service.ArtworkService;
+import com.artgallery.service.ArtistService;
+import com.artgallery.service.CategoryService;
 import com.artgallery.model.Artwork;
 import com.artgallery.model.Artist;
 import com.artgallery.model.Category;
@@ -33,7 +35,9 @@ public class ArtworkController {
     @FXML
     private Button cartButton;
 
-    private GalleryService galleryService = new GalleryService();
+    private ArtworkService artworkService = new ArtworkService();
+    private ArtistService artistService = new ArtistService();
+    private CategoryService categoryService = new CategoryService();
     private User currentUser;
     private boolean isAdmin;
 
@@ -48,10 +52,10 @@ public class ArtworkController {
             adminToolbar.setManaged(isAdmin);
         }
 
-        // Pour les admins, on garde le bouton retour mais vers le dashboard
+        // pour l'admin on garde le bouton retour mais vers le dashboard
         if (isAdmin) {
             if (backButton != null) {
-                backButton.setText("⬅️ Tableau de Bord");
+                backButton.setText("⬅ Tableau de Bord");
                 backButton.setVisible(true);
                 backButton.setManaged(true);
                 backButton.setStyle("-fx-background-color: #2196f3; -fx-text-fill: white; -fx-font-weight: bold;");
@@ -61,7 +65,7 @@ public class ArtworkController {
                 cartButton.setManaged(false);
             }
         } else {
-            // Pour les utilisateurs normaux, on cache le bouton retour (page racine)
+            // pour le client on cache le bouton retour
             if (backButton != null) {
                 backButton.setVisible(false);
                 backButton.setManaged(false);
@@ -74,7 +78,7 @@ public class ArtworkController {
     private void loadArtworks() {
         galleryPane.getChildren().clear();
 
-        for (Artwork artwork : galleryService.getAllArtworks()) {
+        for (Artwork artwork : artworkService.getAllArtworks()) {
             VBox card = createArtworkCard(artwork);
             galleryPane.getChildren().add(card);
         }
@@ -88,7 +92,6 @@ public class ArtworkController {
         card.setPrefWidth(240);
         card.setMinHeight(350);
 
-        // Image container with border
         VBox imageContainer = new VBox();
         imageContainer.setAlignment(Pos.CENTER);
         imageContainer.setStyle("-fx-border-color: #eee; -fx-border-width: 1; -fx-background-color: #fafafa;");
@@ -102,26 +105,25 @@ public class ArtworkController {
 
         imageView.setImage(ImageUtils.loadImage(artwork.getImageUrl()));
 
-        // Titre
+        //titre
         Label titleLabel = new Label(artwork.getTitle());
         titleLabel.getStyleClass().add("sub-header");
         titleLabel.setWrapText(true);
         titleLabel.setMaxWidth(220);
         titleLabel.setAlignment(Pos.CENTER);
 
-        // Artiste
+        // artiste
         Label artistLabel = new Label("👨‍🎨 " + artwork.getArtist().getName());
         artistLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
 
-        // Catégorie
+        //catégorie
         Label categoryLabel = new Label("🏷️ " + artwork.getCategory().getName());
         categoryLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #666;");
 
-        // Prix
+        //prix
         Label priceLabel = new Label(artwork.getPrice() + " Dhs");
         priceLabel.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #27ae60;");
 
-        // Boutons selon le rôle
         if (isAdmin) {
             HBox buttonBox = new HBox(5);
             buttonBox.setAlignment(Pos.CENTER);
@@ -138,7 +140,7 @@ public class ArtworkController {
             card.getChildren().addAll(imageContainer, titleLabel, artistLabel, categoryLabel, priceLabel, buttonBox);
         } else {
             // Utilisateur : Voir bouton Ajouter au Panier
-            Button addToCartBtn = new Button("🛒 Ajouter au Panier");
+            Button addToCartBtn = new Button(" Ajouter au Panier");
             addToCartBtn.getStyleClass().add("btn-success");
             addToCartBtn.setPrefWidth(200);
             addToCartBtn.setOnAction(e -> handleAddToCart(artwork));
@@ -185,9 +187,9 @@ public class ArtworkController {
         descArea.setPrefRowCount(3);
 
         ComboBox<Artist> artistCombo = new ComboBox<>(
-                FXCollections.observableArrayList(galleryService.getAllArtists()));
+                FXCollections.observableArrayList(artistService.getAllArtists()));
         ComboBox<Category> categoryCombo = new ComboBox<>(
-                FXCollections.observableArrayList(galleryService.getAllCategories()));
+                FXCollections.observableArrayList(categoryService.getAllCategories()));
 
         grid.add(new Label("Titre:"), 0, 0);
         grid.add(titleField, 1, 0);
@@ -228,7 +230,7 @@ public class ArtworkController {
 
         Optional<Artwork> result = dialog.showAndWait();
         result.ifPresent(artwork -> {
-            galleryService.addArtwork(artwork);
+            artworkService.addArtwork(artwork);
             loadArtworks();
             messageLabel.setText("Œuvre ajoutée avec succès !");
         });
@@ -256,10 +258,10 @@ public class ArtworkController {
         descArea.setPrefRowCount(3);
 
         ComboBox<Artist> artistCombo = new ComboBox<>(
-                FXCollections.observableArrayList(galleryService.getAllArtists()));
+                FXCollections.observableArrayList(artistService.getAllArtists()));
         artistCombo.setValue(artwork.getArtist());
         ComboBox<Category> categoryCombo = new ComboBox<>(
-                FXCollections.observableArrayList(galleryService.getAllCategories()));
+                FXCollections.observableArrayList(categoryService.getAllCategories()));
         categoryCombo.setValue(artwork.getCategory());
 
         grid.add(new Label("Titre:"), 0, 0);
@@ -282,7 +284,6 @@ public class ArtworkController {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == saveButtonType) {
                 try {
-                    // Create a copy or update fields carefully
                     artwork.setTitle(titleField.getText());
                     artwork.setPrice(new BigDecimal(priceField.getText()));
                     artwork.setQuantity(Integer.parseInt(quantityField.getText()));
@@ -309,7 +310,7 @@ public class ArtworkController {
         Optional<Artwork> result = dialog.showAndWait();
         result.ifPresent(updatedArtwork -> {
             try {
-                galleryService.updateArtwork(updatedArtwork);
+                artworkService.updateArtwork(updatedArtwork);
                 loadArtworks();
                 messageLabel.setText("Œuvre modifiée avec succès !");
             } catch (Exception e) {
@@ -328,7 +329,7 @@ public class ArtworkController {
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            galleryService.deleteArtwork(artwork);
+            artworkService.deleteArtwork(artwork);
             loadArtworks();
             messageLabel.setText("Œuvre supprimée !");
         }
@@ -350,8 +351,6 @@ public class ArtworkController {
         if (isAdmin) {
             App.setRoot("admin_dashboard");
         } else {
-            // Pour un utilisateur normal, on peut le renvoyer au login (logout)
-            // ou simplement ne rien faire s'il est déjà sur sa page principale
             handleLogout();
         }
     }
